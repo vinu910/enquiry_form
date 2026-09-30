@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Send an Enquiry</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+<style>
+  body { margin: 0; }
+  .sme-wrap, .sme-wrap * { box-sizing: border-box; }
+  .sme-wrap {
+    --sme-card: #2b2b42;
+    --sme-field: #383850;
+    --sme-line: #4a4a63;
+    --sme-muted: #8f8fa6;
+    --sme-gold: #d4a017;
+    --sme-gold-dark: #a97c0c;
+    --sme-error: #ff8a80;
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #26263f 100%);
+    font-family: "DM Sans", "Segoe UI", system-ui, sans-serif;
+    color: #fff;
+  }
+  .sme-inner { max-width: 780px; margin: 0 auto; }
+  .sme-title {
+    margin: 0;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    line-height: 1.15;
+    color: #fff;
+  }
+  .sme-rule { width: 48px; height: 3px; margin: 14px 0 32px; background: var(--sme-gold); border: 0; }
+  .sme-card {
+    padding: 44px 48px;
+    background: var(--sme-card);
+    border: 1px solid var(--sme-line);
+    border-radius: 26px;
+  }
+  .sme-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .sme-field { margin-bottom: 22px; }
+  .sme-label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #c2c2d3;
+  }
+  .sme-label b { margin-right: 7px; color: var(--sme-gold); font-weight: 600; }
+  .sme-input, .sme-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font: inherit;
+    font-size: 0.95rem;
+    color: #fff;
+    background: var(--sme-field);
+    border: 1px solid var(--sme-line);
+    border-radius: 12px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .sme-textarea { min-height: 120px; resize: vertical; }
+  .sme-input::placeholder, .sme-textarea::placeholder { color: var(--sme-muted); }
+  .sme-input:focus, .sme-textarea:focus {
+    outline: none;
+    border-color: var(--sme-gold);
+    box-shadow: 0 0 0 3px rgba(212, 160, 23, .25);
+  }
+  .sme-stars { display: flex; gap: 10px; }
+  .sme-star {
+    width: 42px; height: 42px;
+    font-size: 1.05rem;
+    line-height: 1;
+    color: #6b6b85;
+    background: var(--sme-field);
+    border: 1px solid var(--sme-line);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: color .12s, border-color .12s, background .12s;
+  }
+  .sme-star:hover { border-color: var(--sme-gold); }
+  .sme-star.on { color: var(--sme-gold); border-color: var(--sme-gold); background: rgba(212, 160, 23, .12); }
+  .sme-star:focus-visible { outline: 3px solid rgba(212, 160, 23, .5); outline-offset: 2px; }
+  .sme-submit {
+    display: block;
+    width: 100%;
+    margin-top: 30px;
+    padding: 17px;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, var(--sme-gold-dark), #c9961b);
+    border: 0;
+    border-radius: 14px;
+    cursor: pointer;
+  }
+  .sme-submit:hover { filter: brightness(1.08); }
+  .sme-submit:focus-visible { outline: 3px solid rgba(212, 160, 23, .5); outline-offset: 2px; }
+  .sme-submit:disabled { opacity: .65; cursor: wait; }
+  .sme-msg { min-height: 1.3em; margin-top: 16px; font-size: .95rem; text-align: center; }
+  .sme-msg.ok { color: #7ee2a8; }
+  .sme-msg.err { color: var(--sme-error); }
+  .sme-hp { position: absolute; left: -9999px; height: 0; width: 0; opacity: 0; }
+  @media (max-width: 640px) {
+    .sme-card { padding: 28px 20px; border-radius: 20px; }
+    .sme-row { grid-template-columns: 1fr; gap: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sme-wrap" id="enquiry">
+  <div class="sme-inner">
+    <h2 class="sme-title">Send an Enquiry</h2>
+    <hr class="sme-rule">
+
+    <form class="sme-card" id="smeForm" novalidate>
+      <div class="sme-row">
+        <div class="sme-field">
+          <label class="sme-label" for="smeName"><b>B</b>Name *</label>
+          <input class="sme-input" id="smeName" name="name" type="text" placeholder="Aapka poora naam" autocomplete="name" required>
+        </div>
+        <div class="sme-field">
+          <label class="sme-label" for="smeCompany"><b>C</b>Company Name *</label>
+          <input class="sme-input" id="smeCompany" name="company" type="text" placeholder="Aapki company ka naam" autocomplete="organization" required>
+        </div>
+      </div>
+
+      <div class="sme-row">
+        <div class="sme-field">
+          <label class="sme-label" for="smeMobile"><b>D</b>Mobile Number *</label>
+          <input class="sme-input" id="smeMobile" name="mobile" type="tel" inputmode="tel" placeholder="+91 XXXXX XXXXX" autocomplete="tel" required>
+        </div>
+        <div class="sme-field">
+          <label class="sme-label" for="smeEmail"><b>E</b>E-Mail *</label>
+          <input class="sme-input" id="smeEmail" name="email" type="email" placeholder="aap@example.com" autocomplete="email" required>
+        </div>
+      </div>
+
+      <div class="sme-field">
+        <label class="sme-label" for="smeReq"><b>F</b>Requirment *</label>
+        <textarea class="sme-textarea" id="smeReq" name="requirement" placeholder="Aapko kya chahiye? (product, quantity, details...)" required></textarea>
+      </div>
+
+      <div class="sme-field" style="margin-bottom:0">
+        <span class="sme-label" id="smeRatingLabel"><b>G</b>Rating (Stars)</span>
+        <div class="sme-stars" role="group" aria-labelledby="smeRatingLabel" id="smeStars">
+          <button type="button" class="sme-star" data-v="1" aria-label="1 star">★</button>
+          <button type="button" class="sme-star" data-v="2" aria-label="2 stars">★</button>
+          <button type="button" class="sme-star" data-v="3" aria-label="3 stars">★</button>
+          <button type="button" class="sme-star" data-v="4" aria-label="4 stars">★</button>
+          <button type="button" class="sme-star" data-v="5" aria-label="5 stars">★</button>
+        </div>
+      </div>
+
+      <!-- spam se bachne ke liye (hide rehta hai) -->
+      <input class="sme-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <button class="sme-submit" type="submit" id="smeBtn">Submit Enquiry →</button>
+      <div class="sme-msg" id="smeMsg" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  // ⚠️ Yaha apna Google Apps Script "Web app URL" paste karo (/exec par khatam hone wala)
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwaN5nKPomrqZJIy38qEd-ToPLzneDhfM-MEmzIVHCn0ul78BTkRFhk_DzbayKFx9GY/exec";
+
+  var form = document.getElementById("smeForm");
+  var btn = document.getElementById("smeBtn");
+  var msg = document.getElementById("smeMsg");
+
+  var stars = document.querySelectorAll("#smeStars .sme-star");
+  var rating = 0;
+  function paint(n) {
+    stars.forEach(function (s) { s.classList.toggle("on", Number(s.dataset.v) <= n); });
+  }
+  stars.forEach(function (s) {
+    s.addEventListener("click", function () { rating = Number(s.dataset.v); paint(rating); });
+    s.addEventListener("mouseenter", function () { paint(Number(s.dataset.v)); });
+  });
+  document.getElementById("smeStars").addEventListener("mouseleave", function () { paint(rating); });
+
+  function show(text, cls) { msg.className = "sme-msg " + (cls || ""); msg.textContent = text; }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    var name = form.name.value.trim();
+    var company = form.company.value.trim();
+    var email = form.email.value.trim();
+    var requirement = form.requirement.value.trim();
+    var digits = form.mobile.value.replace(/\D/g, "");
+    if (digits.length === 12 && digits.indexOf("91") === 0) digits = digits.slice(2);
+
+    if (!name) return show("Apna naam likhein.", "err");
+    if (!company) return show("Company ka naam likhein.", "err");
+    if (!/^[6-9]\d{9}$/.test(digits)) return show("Sahi 10 digit ka mobile number daalein.", "err");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return show("Sahi e-mail daalein.", "err");
+    if (!requirement) return show("Apni requirement likhein.", "err");
+    if (form.website.value) return; // bot
+    if (SCRIPT_URL.indexOf("PASTE_YOUR") !== -1) return show("SCRIPT_URL abhi set nahi hai.", "err");
+
+    btn.disabled = true;
+    btn.textContent = "Bhej rahe hain...";
+    show("");
+
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ name: name, company: company, mobile: digits, email: email, requirement: requirement, rating: rating || "" })
+    }).then(function () {
+      show("Dhanyavaad! Aapki enquiry mil gayi hai. Hum jaldi sampark karenge.", "ok");
+      form.reset();
+      rating = 0;
+      paint(0);
+    }).catch(function () {
+      show("Submit nahi hua. Internet check karke dobara koshish karein.", "err");
+    }).finally(function () {
+      btn.disabled = false;
+      btn.textContent = "Submit Enquiry →";
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
