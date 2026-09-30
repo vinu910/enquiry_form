@@ -128,6 +128,11 @@
       </div>
 
       <div class="sme-field">
+        <label class="sme-label" for="smeSource">Source *</label>
+        <input class="sme-input" id="smeSource" name="source" type="text" autocomplete="off" required>
+      </div>
+
+      <div class="sme-field">
         <label class="sme-label" for="smeReq">Requirement *</label>
         <textarea class="sme-textarea" id="smeReq" name="requirement" required></textarea>
       </div>
@@ -157,6 +162,7 @@
     var name = form.name.value.trim();
     var company = form.company.value.trim();
     var email = form.email.value.trim();
+    var source = form.source.value.trim();
     var requirement = form.requirement.value.trim();
     var digits = form.mobile.value.replace(/\D/g, "");
     if (digits.length === 12 && digits.indexOf("91") === 0) digits = digits.slice(2);
@@ -165,6 +171,7 @@
     if (!company) return show("Company ka naam likhein.", "err");
     if (!/^[6-9]\d{9}$/.test(digits)) return show("Sahi 10 digit ka mobile number daalein.", "err");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return show("Sahi e-mail daalein.", "err");
+    if (!source) return show("Source likhein.", "err");
     if (!requirement) return show("Apni requirement likhein.", "err");
     if (form.website.value) return; // bot
 
@@ -176,7 +183,14 @@
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ name: name, company: company, mobile: digits, email: email, requirement: requirement })
+      body: JSON.stringify({
+        name: name,
+        company: company,
+        mobile: digits,
+        email: email,
+        source: source,
+        requirement: requirement
+      })
     }).then(function () {
       show("Dhanyavaad! Aapki enquiry mil gayi hai. Hum jaldi sampark karenge.", "ok");
       form.reset();
