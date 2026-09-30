@@ -52,7 +52,6 @@
     text-transform: uppercase;
     color: #c2c2d3;
   }
-  .sme-label b { margin-right: 7px; color: var(--sme-gold); font-weight: 600; }
   .sme-input, .sme-textarea {
     width: 100%;
     padding: 14px 16px;
@@ -71,21 +70,6 @@
     border-color: var(--sme-gold);
     box-shadow: 0 0 0 3px rgba(212, 160, 23, .25);
   }
-  .sme-stars { display: flex; gap: 10px; }
-  .sme-star {
-    width: 42px; height: 42px;
-    font-size: 1.05rem;
-    line-height: 1;
-    color: #6b6b85;
-    background: var(--sme-field);
-    border: 1px solid var(--sme-line);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: color .12s, border-color .12s, background .12s;
-  }
-  .sme-star:hover { border-color: var(--sme-gold); }
-  .sme-star.on { color: var(--sme-gold); border-color: var(--sme-gold); background: rgba(212, 160, 23, .12); }
-  .sme-star:focus-visible { outline: 3px solid rgba(212, 160, 23, .5); outline-offset: 2px; }
   .sme-submit {
     display: block;
     width: 100%;
@@ -123,40 +107,29 @@
     <form class="sme-card" id="smeForm" novalidate>
       <div class="sme-row">
         <div class="sme-field">
-          <label class="sme-label" for="smeName"><b>B</b>Name *</label>
-          <input class="sme-input" id="smeName" name="name" type="text" placeholder="Aapka poora naam" autocomplete="name" required>
+          <label class="sme-label" for="smeName">Name *</label>
+          <input class="sme-input" id="smeName" name="name" type="text" autocomplete="name" required>
         </div>
         <div class="sme-field">
-          <label class="sme-label" for="smeCompany"><b>C</b>Company Name *</label>
-          <input class="sme-input" id="smeCompany" name="company" type="text" placeholder="Aapki company ka naam" autocomplete="organization" required>
+          <label class="sme-label" for="smeCompany">Company Name *</label>
+          <input class="sme-input" id="smeCompany" name="company" type="text" autocomplete="organization" required>
         </div>
       </div>
 
       <div class="sme-row">
         <div class="sme-field">
-          <label class="sme-label" for="smeMobile"><b>D</b>Mobile Number *</label>
+          <label class="sme-label" for="smeMobile">Mobile Number *</label>
           <input class="sme-input" id="smeMobile" name="mobile" type="tel" inputmode="tel" placeholder="+91 XXXXX XXXXX" autocomplete="tel" required>
         </div>
         <div class="sme-field">
-          <label class="sme-label" for="smeEmail"><b>E</b>E-Mail *</label>
+          <label class="sme-label" for="smeEmail">E-Mail *</label>
           <input class="sme-input" id="smeEmail" name="email" type="email" placeholder="aap@example.com" autocomplete="email" required>
         </div>
       </div>
 
       <div class="sme-field">
-        <label class="sme-label" for="smeReq"><b>F</b>Requirment *</label>
-        <textarea class="sme-textarea" id="smeReq" name="requirement" placeholder="Aapko kya chahiye? (product, quantity, details...)" required></textarea>
-      </div>
-
-      <div class="sme-field" style="margin-bottom:0">
-        <span class="sme-label" id="smeRatingLabel"><b>G</b>Rating (Stars)</span>
-        <div class="sme-stars" role="group" aria-labelledby="smeRatingLabel" id="smeStars">
-          <button type="button" class="sme-star" data-v="1" aria-label="1 star">★</button>
-          <button type="button" class="sme-star" data-v="2" aria-label="2 stars">★</button>
-          <button type="button" class="sme-star" data-v="3" aria-label="3 stars">★</button>
-          <button type="button" class="sme-star" data-v="4" aria-label="4 stars">★</button>
-          <button type="button" class="sme-star" data-v="5" aria-label="5 stars">★</button>
-        </div>
+        <label class="sme-label" for="smeReq">Requirement *</label>
+        <textarea class="sme-textarea" id="smeReq" name="requirement" required></textarea>
       </div>
 
       <!-- spam se bachne ke liye (hide rehta hai) -->
@@ -170,23 +143,11 @@
 
 <script>
 (function () {
-  // ⚠️ Yaha apna Google Apps Script "Web app URL" paste karo (/exec par khatam hone wala)
   var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwaN5nKPomrqZJIy38qEd-ToPLzneDhfM-MEmzIVHCn0ul78BTkRFhk_DzbayKFx9GY/exec";
 
   var form = document.getElementById("smeForm");
   var btn = document.getElementById("smeBtn");
   var msg = document.getElementById("smeMsg");
-
-  var stars = document.querySelectorAll("#smeStars .sme-star");
-  var rating = 0;
-  function paint(n) {
-    stars.forEach(function (s) { s.classList.toggle("on", Number(s.dataset.v) <= n); });
-  }
-  stars.forEach(function (s) {
-    s.addEventListener("click", function () { rating = Number(s.dataset.v); paint(rating); });
-    s.addEventListener("mouseenter", function () { paint(Number(s.dataset.v)); });
-  });
-  document.getElementById("smeStars").addEventListener("mouseleave", function () { paint(rating); });
 
   function show(text, cls) { msg.className = "sme-msg " + (cls || ""); msg.textContent = text; }
 
@@ -206,7 +167,6 @@
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return show("Sahi e-mail daalein.", "err");
     if (!requirement) return show("Apni requirement likhein.", "err");
     if (form.website.value) return; // bot
-    if (SCRIPT_URL.indexOf("PASTE_YOUR") !== -1) return show("SCRIPT_URL abhi set nahi hai.", "err");
 
     btn.disabled = true;
     btn.textContent = "Bhej rahe hain...";
@@ -216,12 +176,10 @@
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ name: name, company: company, mobile: digits, email: email, requirement: requirement, rating: rating || "" })
+      body: JSON.stringify({ name: name, company: company, mobile: digits, email: email, requirement: requirement })
     }).then(function () {
       show("Dhanyavaad! Aapki enquiry mil gayi hai. Hum jaldi sampark karenge.", "ok");
       form.reset();
-      rating = 0;
-      paint(0);
     }).catch(function () {
       show("Submit nahi hua. Internet check karke dobara koshish karein.", "err");
     }).finally(function () {
