@@ -148,7 +148,8 @@
 
 <script>
 (function () {
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwaN5nKPomrqZJIy38qEd-ToPLzneDhfM-MEmzIVHCn0ul78BTkRFhk_DzbayKFx9GY/exec";
+  // Naye Apps Script ka /exec URL yahan paste karein
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAMOvGxbwg8kf5x-SdYzwoxEkCxrzLUQbsCVrPdtoasTkVOSGss4ZBkxSmtBRf12Y/exec";
 
   var form = document.getElementById("smeForm");
   var btn = document.getElementById("smeBtn");
@@ -181,7 +182,6 @@
 
     fetch(SCRIPT_URL, {
       method: "POST",
-      mode: "no-cors",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify({
         name: name,
@@ -191,11 +191,16 @@
         source: source,
         requirement: requirement
       })
-    }).then(function () {
-      show("Dhanyavaad! Aapki enquiry mil gayi hai. Hum jaldi sampark karenge.", "ok");
-      form.reset();
+    }).then(function (r) { return r.text(); })
+    .then(function (t) {
+      if (t.trim() === "OK") {
+        show("Dhanyavaad! Aapki enquiry mil gayi hai. Hum jaldi sampark karenge.", "ok");
+        form.reset();
+      } else {
+        show("Sheet error: " + t.slice(0, 150), "err");
+      }
     }).catch(function () {
-      show("Submit nahi hua. Internet check karke dobara koshish karein.", "err");
+      show("Server se connect nahi hua. SCRIPT_URL aur deployment (Anyone) check karein.", "err");
     }).finally(function () {
       btn.disabled = false;
       btn.textContent = "Submit Enquiry →";
